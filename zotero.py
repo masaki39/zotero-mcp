@@ -1,6 +1,7 @@
 from typing import Any
 import httpx
 from mcp.server.fastmcp import FastMCP
+import PyPDF2
 
 # FastMCPサーバの初期化
 mcp = FastMCP("zotero")
@@ -34,6 +35,24 @@ async def get_all_items() -> str:
     # タイトルとIDのみを列挙
     items = [f"{item['data'].get('title', 'No Title')} (key: {item['key']})" for item in data]
     return "\n".join(items)
+
+@mcp.tool()
+async def get_an_item(item_key: str) -> str:
+    """Zoteroのライブラリ内の指定されたアイテムの詳細をitem_keyをキーに取得する。"""
+    data = await make_zotero_request(f"items/{item_key}")
+    if "error" in data:
+        return f"Zotero APIエラー: {data['error']}"
+    return data
+
+@mcp.tool()
+async def read_pdf(pdf_path: str) -> str:
+    """指定されたpathのPDFファイルを読み込んで、テキストを返す。"""
+    with open(pdf_path, "rb") as f:
+        pdf_reader = PyPDF2.PdfReader(f)
+        text = ""
+        for page in pdf_reader.pages:
+            text += page.extract_text() or ""
+    return text
 
 if __name__ == "__main__":
     mcp.run(transport='stdio')
