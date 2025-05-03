@@ -1,5 +1,5 @@
 [project]
-name = "zotero"
+name = "zotero-mcp"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -9,3 +9,6 @@ dependencies = [
     "mcp[cli]>=1.7.1",
     "PyPDF2>=3.0.0",
 ]
+
+[project.scripts]
+zotero-mcp = "zotero-mcp:mcp.run"
