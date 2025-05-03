@@ -370,7 +370,7 @@ wheels = [
 ]
 
 [[package]]
-name = "zotero"
+name = "zotero-mcp"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
