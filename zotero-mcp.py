@@ -4,14 +4,14 @@ from mcp.server.fastmcp import FastMCP
 import PyPDF2
 import urllib.parse
 
-# FastMCPサーバの初期化
+# Initialize FastMCP server
 mcp = FastMCP("zotero")
 
 ZOTERO_API_BASE = "http://localhost:23119/api/users/0/"
 USER_AGENT = "zotero-mcp/1.0"
 
 async def make_zotero_request(endpoint: str) -> Any:
-    """Zotero APIへのリクエストを行う。"""
+    """Make a request to the Zotero API."""
     headers = {
         "User-Agent": USER_AGENT,
         "Accept": "application/json"
@@ -27,8 +27,8 @@ async def make_zotero_request(endpoint: str) -> Any:
 
 @mcp.tool()
 async def zotero_search_items(q: str = "") -> str:
-    """Zoteroライブラリ内のアイテムを著者名とタイトルで検索する（添付ファイルを除外、最大30件）。"""
-    # クエリパラメータの組み立て
+    """Search items in the Zotero library by author and title (excluding attachments, up to 30 results)."""
+    # Build query parameters
     params = [
         "itemType=-attachment",
         "limit=30"
@@ -38,38 +38,38 @@ async def zotero_search_items(q: str = "") -> str:
     param_str = "&".join(params)
     data = await make_zotero_request(f"items?{param_str}")
     if "error" in data:
-        return f"Zotero APIエラー: {data['error']}"
+        return f"Zotero API error: {data['error']}"
     if not data:
-        return "アイテムが見つからなかった。"
+        return "No items found."
     return data
 
 @mcp.tool()
 async def zotero_get_item(itemKey: str) -> str:
-    """Zoteroのライブラリ内の指定されたアイテムの詳細をitemKeyをキーにして取得する。"""
+    """Retrieve the details of a specified item in the Zotero library by itemKey."""
     data = await make_zotero_request(f"items/{itemKey}")
     if "error" in data:
-        return f"Zotero APIエラー: {data['error']}"
+        return f"Zotero API error: {data['error']}"
     return data
 
 @mcp.tool()
 async def zotero_read_pdf(itemKey: str) -> str:
-    """itemKeyで指定されたZoteroライブラリ内のアイテムのchildrenから、最初に見つかったPDF添付ファイルをローカルファイルシステムから読み込み、その全文テキストを返す。"""
-    # children取得
+    """From the children of the item specified by itemKey in the Zotero library, find the first PDF attachment, read it from the local file system, and return its full text."""
+    # Get children
     children = await make_zotero_request(f"items/{itemKey}/children")
     if "error" in children:
-        return f"Zotero APIエラー: {children['error']}"
-    # PDF添付ファイルを探す
+        return f"Zotero API error: {children['error']}"
+    # Search for PDF attachment
     pdf_path = None
     for child in children:
         if child['data'].get('itemType') == 'attachment' and child['data'].get('contentType') == 'application/pdf':
             enclosure = child.get('links', {}).get('enclosure', {})
             href = enclosure.get('href')
             if href and href.startswith('file:///'):
-                pdf_path = urllib.parse.unquote(href[len('file://'):])  # file:///を除去しデコード
+                pdf_path = urllib.parse.unquote(href[len('file://'):])  # Remove file:/// and decode
                 break
     if not pdf_path:
-        return "PDF添付ファイルが見つからなかった。"
-    # PDFを読み込んでテキスト抽出
+        return "No PDF attachment found."
+    # Read PDF and extract text
     with open(pdf_path, "rb") as f:
         pdf_reader = PyPDF2.PdfReader(f)
         text = ""
