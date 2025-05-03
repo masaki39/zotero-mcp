@@ -25,16 +25,22 @@ async def make_zotero_request(endpoint: str) -> Any:
             return {"error": str(e)}
 
 @mcp.tool()
-async def get_all_items() -> str:
-    """Zoteroライブラリ内の全アイテムを取得する。"""
-    data = await make_zotero_request("items")
+async def zotero_search_items(q: str = "") -> str:
+    """Zoteroライブラリ内のアイテムを著者名とタイトルで検索する（添付ファイルを除外、最大30件）。"""
+    # クエリパラメータの組み立て
+    params = [
+        "itemType=-attachment",
+        "limit=30"
+    ]
+    if q:
+        params.append(f"q={q}")
+    param_str = "&".join(params)
+    data = await make_zotero_request(f"items?{param_str}")
     if "error" in data:
         return f"Zotero APIエラー: {data['error']}"
     if not data:
         return "アイテムが見つからなかった。"
-    # タイトルとIDのみを列挙
-    items = [f"{item['data'].get('title', 'No Title')} (key: {item['key']})" for item in data]
-    return "\n".join(items)
+    return data
 
 @mcp.tool()
 async def get_an_item(item_key: str) -> str:
