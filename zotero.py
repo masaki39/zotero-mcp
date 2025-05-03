@@ -2,6 +2,7 @@ from typing import Any
 import httpx
 from mcp.server.fastmcp import FastMCP
 import PyPDF2
+import urllib.parse
 
 # FastMCPサーバの初期化
 mcp = FastMCP("zotero")
@@ -43,16 +44,32 @@ async def zotero_search_items(q: str = "") -> str:
     return data
 
 @mcp.tool()
-async def get_an_item(item_key: str) -> str:
-    """Zoteroのライブラリ内の指定されたアイテムの詳細をitem_keyをキーに取得する。"""
-    data = await make_zotero_request(f"items/{item_key}")
+async def zotero_get_item(itemKey: str) -> str:
+    """Zoteroのライブラリ内の指定されたアイテムの詳細をitemKeyをキーにして取得する。"""
+    data = await make_zotero_request(f"items/{itemKey}")
     if "error" in data:
         return f"Zotero APIエラー: {data['error']}"
     return data
 
 @mcp.tool()
-async def read_pdf(pdf_path: str) -> str:
-    """指定されたpathのPDFファイルを読み込んで、テキストを返す。"""
+async def zotero_read_pdf(itemKey: str) -> str:
+    """itemKeyで指定されたZoteroライブラリ内のアイテムのchildrenから、最初に見つかったPDF添付ファイルをローカルファイルシステムから読み込み、その全文テキストを返す。"""
+    # children取得
+    children = await make_zotero_request(f"items/{itemKey}/children")
+    if "error" in children:
+        return f"Zotero APIエラー: {children['error']}"
+    # PDF添付ファイルを探す
+    pdf_path = None
+    for child in children:
+        if child['data'].get('itemType') == 'attachment' and child['data'].get('contentType') == 'application/pdf':
+            enclosure = child.get('links', {}).get('enclosure', {})
+            href = enclosure.get('href')
+            if href and href.startswith('file:///'):
+                pdf_path = urllib.parse.unquote(href[len('file://'):])  # file:///を除去しデコード
+                break
+    if not pdf_path:
+        return "PDF添付ファイルが見つからなかった。"
+    # PDFを読み込んでテキスト抽出
     with open(pdf_path, "rb") as f:
         pdf_reader = PyPDF2.PdfReader(f)
         text = ""
