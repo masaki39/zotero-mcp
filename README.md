@@ -11,8 +11,8 @@ I use Cursor as my MCP client.
 
 - uv (Python package manager)
 - Zotero application (local API must be enabled)
+- Git
 - Only when local installation
-  - Git
   - Python 3.12 or higher (lower version might work, but I haven't tested it)
 
 ## How to Enable Zotero Local API
