@@ -11,4 +11,4 @@ dependencies = [
 ]
 
 [project.scripts]
-zotero-mcp = "main:main"
+zotero-mcp = "zotero-mcp:main"

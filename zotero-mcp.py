@@ -77,5 +77,8 @@ async def zotero_read_pdf(itemKey: str) -> str:
             text += page.extract_text() or ""
     return text
 
-if __name__ == "__main__":
+def main():
     mcp.run(transport='stdio')
+
+if __name__ == "__main__":
+    main()
