@@ -9,3 +9,6 @@ dependencies = [
     "mcp[cli]>=1.7.1",
     "PyPDF2>=3.0.0",
 ]
+
+[project.scripts]
+zotero-mcp = "zotero_mcp.cli:main"
