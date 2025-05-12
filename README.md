@@ -38,7 +38,7 @@ Add the following to your `mcp.json` or mcp configuration file:
 }
 ```
 
-> ![warning]
+> [!warning]
 > This method temporarily installs the latest version of the server from this repository.
 > In security-conscious environments, it is recommended to use the local installation method.
 
