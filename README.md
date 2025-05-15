@@ -11,8 +11,8 @@ I use Cursor as my MCP client.
 
 - uv (Python package manager)
 - Zotero application (local API must be enabled)
-- Git
 - Only when local installation
+  - Git
   - Python 3.12 or higher (lower version might work, but I haven't tested it)
 
 ## How to Enable Zotero Local API
@@ -24,6 +24,14 @@ In Zotero's settings, check the following item:
 ## Installation
 
 ### Quick Start
+
+Test the server by running the following command in the terminal or command prompt/powershell: 
+
+```bash
+uvx git+https://github.com/masaki39/zotero-mcp.git
+```
+
+If no error occurs, the server is working.
 
 Add the following to your `mcp.json` or mcp configuration file:
 

@@ -3,6 +3,7 @@ import httpx
 from mcp.server.fastmcp import FastMCP
 import PyPDF2
 import urllib.parse
+import os
 
 # Initialize FastMCP server
 mcp = FastMCP("zotero")
@@ -65,17 +66,24 @@ async def zotero_read_pdf(itemKey: str) -> str:
             enclosure = child.get('links', {}).get('enclosure', {})
             href = enclosure.get('href')
             if href and href.startswith('file:///'):
-                pdf_path = urllib.parse.unquote(href[len('file://'):])  # Remove file:/// and decode
+                # URLからファイルパスへの変換（クロスプラットフォーム対応）
+                if os.name == 'nt':  # Windows
+                    pdf_path = urllib.parse.unquote(href[8:])  # 'file:///' (8文字) を削除
+                else:  # Unix系 (macOS, Linux)
+                    pdf_path = urllib.parse.unquote(href[7:])  # 'file://' (7文字) を削除
                 break
     if not pdf_path:
         return "No PDF attachment found."
     # Read PDF and extract text
-    with open(pdf_path, "rb") as f:
-        pdf_reader = PyPDF2.PdfReader(f)
-        text = ""
-        for page in pdf_reader.pages:
-            text += page.extract_text() or ""
-    return text
+    try:
+        with open(pdf_path, "rb") as f:
+            pdf_reader = PyPDF2.PdfReader(f)
+            text = ""
+            for page in pdf_reader.pages:
+                text += page.extract_text() or ""
+        return text
+    except Exception as e:
+        return f"Error reading PDF: {str(e)} (Path: {pdf_path})"
 
 def main():
     mcp.run(transport='stdio')
