@@ -81,12 +81,15 @@ Add the following to your `mcp.json` or mcp configuration file:
 - zotero_search_items: Search items by author name or title (excluding attachments, up to 30 results)
 - zotero_get_item: Retrieve item details by item key
 - zotero_read_pdf: Extract and convert the full text of PDF attachments from an item key
+- read_pdf: Extract and convert the full text of PDF attachments from a local file path
 
 ## Details of Each Command
 
 - zotero_search_items: Performs a partial match search for author names or titles using the `q` parameter.
 - zotero_get_item: Retrieves detailed information for the specified item using the `itemKey` parameter.
 - zotero_read_pdf: Extracts and returns the full text of PDF attachments under the specified item using the `itemKey` parameter.
+- read_pdf: Extracts and returns the full text of PDF attachments from a local file path using the `filePath` parameter.
+  - Assumes using filesystem MCP server.
 
 ## License
 
