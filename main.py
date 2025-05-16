@@ -85,6 +85,19 @@ async def zotero_read_pdf(itemKey: str) -> str:
     except Exception as e:
         return f"Error reading PDF: {str(e)} (Path: {pdf_path})"
 
+@mcp.tool()
+async def read_pdf(local_path: str) -> str:
+    """Read a PDF file from the local file path and return its full text."""
+    try:
+        with open(local_path, "rb") as f:
+            pdf_reader = PyPDF2.PdfReader(f)
+            text = ""
+            for page in pdf_reader.pages:
+                text += page.extract_text() or ""
+        return text
+    except Exception as e:
+        return f"Error reading PDF: {str(e)} (Path: {local_path})"
+
 def main():
     mcp.run(transport='stdio')
 
