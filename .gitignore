@@ -5,6 +5,23 @@ build/
 dist/
 wheels/
 *.egg-info
+*.egg
 
 # Virtual environments
 .venv
+venv/
+env/
+
+# PyPI build artifacts
+.eggs/
+*.whl
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

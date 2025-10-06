@@ -1,98 +1,57 @@
 # Zotero MCP Server
 
-This is an MCP server that utilizes Zotero's local API to search, retrieve, and extract full text from PDFs in the Zotero library.
-This README is for Mac/Linux users.
-Windows users should refer to the following link because I am not detailed enough:
-[For Server Developers - Model Context Protocol](https://modelcontextprotocol.io/quickstart/server#windows)
-I use Cursor as my MCP client.
-
+An MCP (Model Context Protocol) server that integrates with Zotero's local API to search, retrieve, and extract full text from PDFs in your Zotero library.
 
 ## Prerequisites
 
-- uv (Python package manager)
-- Zotero application (local API must be enabled)
-- Only when local installation
-  - Git
-  - Python 3.12 or higher (lower version might work, but I haven't tested it)
+- Zotero application with local API enabled
+- Python 3.12 or higher
+- uv or pip package manager
 
-## How to Enable Zotero Local API
+## Enable Zotero Local API
 
-In Zotero's settings, check the following item:
+In Zotero's settings (Preferences → Advanced → General), enable:
 
-- [ ] Allow other applications on this computer to communicate with Zotero
+☑️ **Allow other applications on this computer to communicate with Zotero**
 
-## Installation
+## Configuration
 
-### Quick Start
-
-Test the server by running the following command in the terminal or command prompt/powershell: 
-
-```bash
-uvx git+https://github.com/masaki39/zotero-mcp.git
-```
-
-If no error occurs, the server is working.
-
-Add the following to your `mcp.json` or mcp configuration file:
+Add the following to your MCP client configuration file (e.g., `mcp.json` for Claude Desktop or Cursor):
 
 ```json
 {
   "mcpServers": {
-    "zotero-mcp": {
+    "zotero": {
       "command": "uvx",
-      "args": ["git+https://github.com/masaki39/zotero-mcp.git"]
+      "args": ["masaki39-zotero-mcp"]
     }
   }
 }
 ```
 
-> [!warning]
-> This method temporarily installs the latest version of the server from this repository.
-> In security-conscious environments, it is recommended to use the local installation method.
+## Available Tools
 
-### Local Installation
+| Tool | Parameters | Description |
+|------|------------|-------------|
+| `zotero_search_items` | `q` (optional) | Search items in your Zotero library by author name or title. Returns up to 30 matching items (excluding attachments). |
+| `zotero_get_item` | `itemKey` (required) | Retrieve detailed information about a specific item including title, authors, publication info, abstract, tags, etc. |
+| `zotero_read_pdf` | `itemKey` (required) | Extract full text from a PDF attachment associated with a Zotero item. |
+| `read_pdf` | `local_path` (required) | Extract full text from a PDF file at a local file path. Can be used with filesystem MCP servers. |
 
-Run the following commands to set up the environment:
+## Example Usage
 
-```bash
-git clone https://github.com/masaki39/zotero-mcp
-cd zotero-mcp
-uv venv
-source .venv/bin/activate
-uv pip install -r pyproject.toml
-```
+Once configured, you can use these tools through your MCP client:
 
-Add the following to your `mcp.json` or mcp configuration file:
-(Replace `path/to/zotero-mcp` with the actual cloned directory.)
-
-```json
-{
-  "mcpServers": {
-    "zotero-mcp": {
-      "command": "uv",
-      "args": ["--directory", "path/to/zotero-mcp", "run", "main.py"]
-    }
-  }
-}
-```
-
-## List of Provided Commands
-
-- zotero_search_items: Search items by author name or title (excluding attachments, up to 30 results)
-- zotero_get_item: Retrieve item details by item key
-- zotero_read_pdf: Extract and convert the full text of PDF attachments from an item key
-- read_pdf: Extract and convert the full text of PDF attachments from a local file path
-
-## Details of Each Command
-
-- zotero_search_items: Performs a partial match search for author names or titles using the `q` parameter.
-- zotero_get_item: Retrieves detailed information for the specified item using the `itemKey` parameter.
-- zotero_read_pdf: Extracts and returns the full text of PDF attachments under the specified item using the `itemKey` parameter.
-- read_pdf: Extracts and returns the full text of PDF attachments from a local file path using the `filePath` parameter.
-  - Assumes using filesystem MCP server.
+- "Search my Zotero library for papers about machine learning"
+- "Get details for item ABCD1234"
+- "Extract the text from the PDF attached to item ABCD1234"
 
 ## License
 
-Refer to the LICENSE file in this repository for license information.
+MIT License - see [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Issues and pull requests are welcome at https://github.com/masaki39/zotero-mcp
 
 

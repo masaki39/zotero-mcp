@@ -1,14 +1,44 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name = "zotero-mcp"
+name = "masaki39-zotero-mcp"
 version = "0.1.0"
-description = "Add your description here"
+description = "MCP server for Zotero integration - search, retrieve, and extract PDF text from your Zotero library"
 readme = "README.md"
 requires-python = ">=3.12"
+license = "MIT"
+authors = [
+    {name = "masaki39", email = "masaki39@example.com"}
+]
+keywords = ["zotero", "mcp", "model-context-protocol", "pdf", "research", "bibliography"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
 dependencies = [
     "httpx>=0.28.1",
     "mcp[cli]>=1.7.1",
     "PyPDF2>=3.0.0",
 ]
 
+[project.urls]
+Homepage = "https://github.com/masaki39/zotero-mcp"
+Repository = "https://github.com/masaki39/zotero-mcp"
+Issues = "https://github.com/masaki39/zotero-mcp/issues"
+
 [project.scripts]
-zotero-mcp = "main:main"
+zotero-mcp = "zotero_mcp:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
