@@ -5,7 +5,7 @@ import PyPDF2
 import urllib.parse
 import os
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 # Initialize FastMCP server
 mcp = FastMCP("zotero")

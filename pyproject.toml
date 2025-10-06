@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "masaki39-zotero-mcp"
-version = "0.1.0"
+version = "0.1.1"
 description = "MCP server for Zotero integration - search, retrieve, and extract PDF text from your Zotero library"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -35,7 +35,7 @@ Repository = "https://github.com/masaki39/zotero-mcp"
 Issues = "https://github.com/masaki39/zotero-mcp/issues"
 
 [project.scripts]
-zotero-mcp = "zotero_mcp:main"
+masaki39-zotero-mcp = "zotero_mcp:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
