@@ -1,12 +1,13 @@
 # Zotero MCP Server
 
+![PyPI - Downloads](https://img.shields.io/pypi/dm/masaki39-zotero-mcp)
+
 An MCP (Model Context Protocol) server that integrates with Zotero's local API to search, retrieve, and extract full text from PDFs in your Zotero library.
 
 ## Prerequisites
 
 - Zotero application with local API enabled
-- Python 3.12 or higher
-- uv or pip package manager
+- uv (recommended) or Python 3.12+ with pip
 
 ## Enable Zotero Local API
 
