@@ -1,5 +1,6 @@
 # Zotero MCP Server
 
+[![PyPI Downloads](https://static.pepy.tech/personalized-badge/masaki39-zotero-mcp?period=total&units=INTERNATIONAL_SYSTEM&left_color=GREY&right_color=GREEN&left_text=downloads)](https://pepy.tech/projects/masaki39-zotero-mcp)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/masaki39-zotero-mcp)
 
 An MCP (Model Context Protocol) server that integrates with Zotero's local API to search, retrieve, and extract full text from PDFs in your Zotero library.
