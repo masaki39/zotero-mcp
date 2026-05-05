@@ -25,7 +25,7 @@ Add the following to your MCP client configuration file (e.g., `mcp.json` for Cl
   "mcpServers": {
     "zotero": {
       "command": "uvx",
-      "args": ["masaki39-zotero-mcp"]
+      "args": ["masaki39-zotero-mcp@latest"]
     }
   }
 }
