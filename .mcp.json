@@ -2,7 +2,7 @@
   "mcpServers": {
     "zotero": {
       "command": "uv",
-      "args": ["run", "--directory", "/Users/masaki/ghq/github.com/masaki39/zotero-mcp", "masaki39-zotero-mcp"]
+      "args": ["run", "--directory", ".", "masaki39-zotero-mcp"]
     }
   }
 }
